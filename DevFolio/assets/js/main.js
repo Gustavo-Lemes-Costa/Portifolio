@@ -248,4 +248,49 @@
   window.addEventListener('load', navmenuScrollspy);
   document.addEventListener('scroll', navmenuScrollspy);
 
+  // Theme Toggle Functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.getElementById('theme-toggle-btn');
+    
+    // Function to set theme
+    function setTheme(themeName) {
+      localStorage.setItem('theme', themeName);
+      document.documentElement.setAttribute('data-theme', themeName);
+    }
+    
+    // Function to toggle theme
+    function toggleTheme() {
+      if (localStorage.getItem('theme') === 'dark') {
+        setTheme('light');
+      } else {
+        setTheme('dark');
+      }
+    }
+    
+    // Initialize theme based on:
+    // 1. User's previous selection stored in localStorage
+    // 2. Or system preference if no selection was made
+    function initTheme() {
+      if (localStorage.getItem('theme')) {
+        // If user has already selected a theme
+        setTheme(localStorage.getItem('theme'));
+      } else {
+        // Otherwise, respect system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          setTheme('dark');
+        } else {
+          setTheme('light');
+        }
+      }
+    }
+    
+    // Set up event listener for theme toggle button
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', toggleTheme);
+    }
+    
+    // Initialize theme on page load
+    initTheme();
+  });
+
 })();
